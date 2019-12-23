@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <h4>Chat</h4>
-         <h5>{{name}}</h5>
-        <h5>{{room}}</h5>
-    </div>
+    <div class="outer_container">
+        <div class="inner_container">
+            <input value="" @change="setMessage" @keyup.enter="sendMessage" type="text">
+        </div>
+    </div>  
 </template>
 
 
@@ -12,12 +12,33 @@ import io from 'socket.io-client';
 
 export default {
     name:'Chat',
-    data:()=>({
+    data(){
+        return{
         name:'',
         room:'',
         socket:'',
+        message:'',
+        messages:[],
         ENDPOINT:'localhost:5000'
-    }),
+    }}, 
+     methods:{
+     setMessage(event){
+         console.log(event.target.value);
+         this.message = event.target.value;
+         console.log(this.message);
+     },
+     sendMessage(event){
+         console.log(event);
+         event.preventDefault();
+         
+        if(this.message){
+            this.socket.emit('sendMessage',this.message,()=>{
+                this.message = ''
+            })
+        }socket
+        console.log(this.message,this.messages);
+     }
+ },
     created(){
         this.name = this.$route.params.data.name;
         this.room = this.$route.params.data.room;
@@ -27,6 +48,9 @@ export default {
         socket.emit('join',{name:this.name,room:this.room},()=>{
             
         });
+        socket.on('message',(message)=>{
+             this.messages = [...this.messages,message]
+        },[this.messages]);
         // console.log(socket);
 
         return ()=>{
@@ -37,6 +61,7 @@ export default {
     beforeDestroy () {
     io.$off();
  },
+
 }
 </script>
 

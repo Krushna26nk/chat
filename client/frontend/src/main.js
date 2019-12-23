@@ -13,7 +13,7 @@ Vue.use(VueRouter);
 Vue.use(VueMaterial);
 const router = new VueRouter({
   routes:[
-    { path:'/' , component:Join},
+    { path:'/' ,redirect:'/login'},
     { path:'/register' , component:Register},
     { path:'/login' , component:Login},
     { path:'/chat',component:Chat},

@@ -24,11 +24,12 @@ const removeUser =(id)=>{
 }
 
 const getUser = (id) =>{
-    users.find((user) => user.id === id);
+    console.log(users);
+    return users.find((user) => user.id === id);
 }
 
 const getUsersInRoom = (room) =>{
-    users.filter((user)=> user.room === room);
+    return users.filter((user)=> user.room === room);
 }
 
 module.exports ={
